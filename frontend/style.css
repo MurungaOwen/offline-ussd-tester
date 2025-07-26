@@ -1,0 +1,1499 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: #323130;
+    line-height: 1.5;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 24px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #323130;
+    padding: 32px 24px;
+    border-radius: 8px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+header h1 {
+    font-size: 2.25rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #005a9e;
+}
+
+header p {
+    font-size: 1rem;
+    color: #605e5c;
+    font-weight: 400;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 300px 420px 1fr;
+    gap: 30px;
+    align-items: start;
+    flex: 1;
+    max-height: calc(100vh - 180px);
+}
+
+/* Control Panel */
+.control-panel {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.control-panel:hover {
+    box-shadow: 
+        0 16px 48px rgba(0, 0, 0, 0.16),
+        0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.control-panel h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #323130;
+}
+
+.endpoint-config {
+    margin-bottom: 20px;
+}
+
+.endpoint-config label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.endpoint-config input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    margin-bottom: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.endpoint-config input:focus {
+    outline: none;
+    border-color: #005a9e;
+    box-shadow: 0 0 0 2px rgba(0, 90, 158, 0.2);
+    background: white;
+}
+
+.endpoint-config button {
+    width: 100%;
+    padding: 12px 16px;
+    background: #005a9e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 90, 158, 0.2);
+}
+
+.endpoint-config button:hover {
+    background: #004578;
+    box-shadow: 0 4px 8px rgba(0, 90, 158, 0.3);
+}
+
+.endpoint-config button:active {
+    background: #003651;
+    transform: scale(0.98);
+}
+
+.session-info p {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.session-info span {
+    font-weight: 600;
+}
+
+.status-idle { color: #95a5a6; }
+.status-active { color: #27ae60; }
+.status-error { color: #e74c3c; }
+
+/* Phone Emulator */
+.phone-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.phone {
+    width: 280px;
+    height: 580px;
+    background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
+    border-radius: 25px;
+    padding: 15px;
+    box-shadow: 
+        0 20px 40px rgba(0,0,0,0.4),
+        inset 0 -2px 3px rgba(255,255,255,0.1),
+        inset 0 2px 3px rgba(0,0,0,0.3);
+    position: relative;
+    border: 2px solid #0a0a0a;
+}
+
+.phone::before {
+    content: '';
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 25px;
+    background: #0a0a0a;
+    border-radius: 0 0 15px 15px;
+    z-index: 1;
+}
+
+.phone::after {
+    content: 'NOKIA';
+    position: absolute;
+    top: 58px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #888;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    z-index: 2;
+}
+
+.phone-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-top: 35px;
+    padding: 0 5px;
+    position: relative;
+}
+
+.speaker {
+    width: 50px;
+    height: 4px;
+    background: #000;
+    border-radius: 2px;
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.carrier {
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.battery-time {
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.signal {
+    display: flex;
+    gap: 2px;
+    align-items: flex-end;
+}
+
+.signal span {
+    width: 3px;
+    background: #4a4a4a;
+    border-radius: 1px;
+    transition: background 0.3s;
+}
+
+.signal span:nth-child(1) { height: 4px; }
+.signal span:nth-child(2) { height: 6px; }
+.signal span:nth-child(3) { height: 8px; }
+.signal span:nth-child(4) { height: 10px; background: #fff; box-shadow: 0 0 3px rgba(255,255,255,0.5); }
+
+/* Screen */
+.screen {
+    background: #9eb89d;
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.03) 2px,
+            rgba(0, 0, 0, 0.03) 4px
+        );
+    height: 200px;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+    position: relative;
+    overflow-y: auto;
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.3),
+        inset 0 -1px 2px rgba(255,255,255,0.1);
+    border: 2px solid #1a1a1a;
+}
+
+.screen-content {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #000;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+    line-height: 1.4;
+}
+
+.screen-content div {
+    padding: 0;
+    margin: 0;
+}
+
+.welcome-text {
+    text-align: center;
+    color: #2a2a2a;
+    font-style: normal;
+    margin-top: 60px;
+    font-size: 12px;
+}
+
+.input-area {
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+    right: 15px;
+}
+
+.input-area input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    font-family: 'Segoe UI', monospace;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-area input:focus {
+    outline: none;
+    border-color: #005a9e;
+    box-shadow: 0 0 0 2px rgba(0, 90, 158, 0.3);
+    background: white;
+}
+
+/* Keypad */
+.keypad {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 5px;
+}
+
+.key-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.key {
+    flex: 1;
+    height: 35px;
+    background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%);
+    border: 1px solid #1a1a1a;
+    border-radius: 5px;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.1s;
+    position: relative;
+    box-shadow: 
+        0 3px 5px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.5);
+}
+
+.key span {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 7px;
+    color: #aaa;
+    font-weight: 400;
+    text-shadow: none;
+}
+
+.key:hover {
+    background: linear-gradient(135deg, #5a5a5a 0%, #3a3a3a 100%);
+}
+
+.key:active {
+    transform: translateY(1px);
+    box-shadow: 
+        0 1px 2px rgba(0,0,0,0.3),
+        inset 0 1px 2px rgba(0,0,0,0.3);
+    background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
+}
+
+.action-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.action-key {
+    flex: 1;
+    height: 30px;
+    border: 1px solid #1a1a1a;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.1s;
+    text-transform: uppercase;
+    box-shadow: 
+        0 3px 5px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.action-key.clear {
+    background: linear-gradient(135deg, #8b0000 0%, #600000 100%);
+    color: white;
+}
+
+.action-key.call {
+    background: linear-gradient(135deg, #006400 0%, #004400 100%);
+    color: white;
+}
+
+.action-key.end {
+    background: linear-gradient(135deg, #666 0%, #444 100%);
+    color: white;
+}
+
+.action-key:active {
+    transform: translateY(1px);
+    box-shadow: 
+        0 1px 2px rgba(0,0,0,0.3),
+        inset 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Log Panel */
+.log-panel {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    max-height: 600px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.log-panel:hover {
+    box-shadow: 
+        0 16px 48px rgba(0, 0, 0, 0.16),
+        0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.log-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #323130;
+}
+
+.log-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.log-actions button {
+    padding: 8px 16px;
+    border: 1px solid rgba(0, 90, 158, 0.2);
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: #005a9e;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: inherit;
+}
+
+.log-actions button:hover {
+    background: rgba(0, 90, 158, 0.08);
+    border-color: #005a9e;
+    transform: translateY(-1px);
+}
+
+.log-content {
+    flex: 1;
+    overflow-y: auto;
+    font-family: 'Cascadia Code', 'Fira Code', 'Courier New', monospace;
+    font-size: 12px;
+    background: rgba(248, 249, 250, 0.8);
+    padding: 16px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.log-empty {
+    text-align: center;
+    color: #95a5a6;
+    font-style: italic;
+}
+
+.log-entry {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-timestamp {
+    color: #7f8c8d;
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.log-request, .log-response {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    white-space: pre-wrap;
+}
+
+.log-request {
+    border-left: 3px solid #3498db;
+}
+
+.log-response {
+    border-left: 3px solid #27ae60;
+}
+
+.log-warning {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    white-space: pre-wrap;
+    border-left: 3px solid #f39c12;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        max-width: 600px;
+        margin: 0 auto;
+        gap: 20px;
+    }
+
+    .control-panel, .log-panel {
+        width: 100%;
+    }
+    
+    .phone-container {
+        order: -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    header {
+        padding: 20px 15px;
+        margin-bottom: 20px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .main-content {
+        gap: 15px;
+    }
+    
+    .control-panel, .log-panel {
+        padding: 20px;
+    }
+}
+
+/* Additional Phone Details */
+.phone-bottom {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 15px;
+    background: #0a0a0a;
+    border-radius: 0 0 10px 10px;
+}
+
+/* Phone Type Selector */
+.phone-type-selector {
+    margin-bottom: 20px;
+}
+
+.phone-type-selector > label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #323130;
+}
+
+.radio-group {
+    display: flex;
+    gap: 16px;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 400;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.radio-group label:hover {
+    background: rgba(0, 90, 158, 0.05);
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 8px;
+    accent-color: #005a9e;
+}
+
+.radio-group input[type="radio"]:checked + span {
+    color: #005a9e;
+    font-weight: 600;
+}
+
+
+/* Smartphone Styles - Material Design */
+.smartphone {
+    width: 360px;
+    height: 720px;
+    background: linear-gradient(145deg, #1f1f1f 0%, #0d1117 100%);
+    border-radius: 28px;
+    padding: 0;
+    position: relative;
+    box-shadow: 
+        0 24px 48px rgba(0,0,0,0.4),
+        0 12px 24px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+    border: 2px solid #2d2d2d;
+    overflow: hidden;
+}
+
+.smartphone-top {
+    position: relative;
+    height: 80px;
+}
+
+.notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 30px;
+    background: #000;
+    border-radius: 0 0 20px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.camera {
+    width: 12px;
+    height: 12px;
+    background: #333;
+    border-radius: 50%;
+    border: 2px solid #222;
+}
+
+.speaker-grill {
+    width: 50px;
+    height: 4px;
+    background: #222;
+    border-radius: 2px;
+}
+
+.status-bar {
+    position: absolute;
+    top: 35px;
+    left: 0;
+    right: 0;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 12px;
+}
+
+.status-right {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.smartphone-screen {
+    height: calc(100% - 100px);
+    background: linear-gradient(180deg, #0d1117 0%, #1a1a1a 100%);
+    margin: 12px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);
+}
+
+.ussd-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 32px);
+    max-width: 320px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 
+        0 24px 48px rgba(0,0,0,0.4),
+        0 8px 16px rgba(0,0,0,0.2);
+    overflow: hidden;
+    elevation: 8;
+}
+
+.popup-header {
+    background: #1976d2;
+    color: white;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 0.15px;
+}
+
+.popup-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+}
+
+.popup-content {
+    padding: 24px;
+    min-height: 120px;
+    max-height: 320px;
+    overflow-y: auto;
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(0,0,0,0.87);
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+}
+
+.popup-content div {
+    padding: 0;
+    margin: 0;
+}
+
+.popup-input {
+    padding: 0 20px 10px;
+}
+
+.popup-input input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.popup-actions {
+    display: flex;
+    border-top: 1px solid #eee;
+}
+
+.popup-btn {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    background: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.popup-btn:first-child {
+    border-right: 1px solid #eee;
+}
+
+.popup-btn.cancel {
+    color: #666;
+}
+
+.popup-btn.send {
+    color: #007AFF;
+}
+
+.popup-btn:hover {
+    background: #f5f5f5;
+}
+
+/* Smartphone Dialer Interface - Material Design */
+.smartphone-dialer-interface {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #0d1117 0%, #1a1a1a 100%);
+    padding: 24px 20px;
+    gap: 32px;
+}
+
+.dialer-display-area {
+    flex: 0 0 auto;
+    padding-top: 20px;
+}
+
+.smartphone-dialer-interface .dialer-display {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 400;
+    color: #ffffff;
+    font-family: 'Roboto Mono', 'Segoe UI', monospace;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 2px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.4),
+        0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.smartphone-keypad {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    max-width: 280px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.keypad-row {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    pointer-events: none;
+    margin-bottom: 6px;
+}
+
+.response-numbers .keypad-row {
+    margin-bottom: 8px;
+}
+
+.keypad-row > * {
+    pointer-events: auto;
+}
+
+.keypad-actions {
+    margin-top: 20px;
+    gap: 40px !important;
+    justify-content: space-around !important;
+    padding: 16px 20px;
+    flex-shrink: 0;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 40;
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.keypad-key {
+    width: 64px;
+    height: 64px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 24px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.keypad-key span {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+}
+
+.keypad-key:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.keypad-key:active {
+    transform: scale(0.95);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.keypad-action {
+    width: 80px;
+    height: 48px;
+    border: none;
+    border-radius: 24px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.keypad-action.delete {
+    background: rgba(255, 71, 87, 0.2);
+    color: #ff4757;
+}
+
+.keypad-action.dial {
+    background: rgba(46, 213, 115, 0.2);
+    color: #2ed573;
+}
+
+.keypad-action:hover {
+    transform: scale(1.05);
+}
+
+.keypad-action.delete:hover {
+    background: rgba(255, 71, 87, 0.3);
+}
+
+.keypad-action.dial:hover {
+    background: rgba(46, 213, 115, 0.3);
+}
+
+.keypad-action:active {
+    transform: scale(0.95);
+}
+
+/* USSD Response Keypad - Material Design */
+.ussd-response-keypad {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #0d1117 0%, #1a1a1a 100%);
+    padding: 20px 16px 16px 16px;
+    gap: 16px;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.ussd-message {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 16px;
+    color: #ffffff;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.4),
+        0 2px 8px rgba(0, 0, 0, 0.2);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 100px;
+    overflow-y: auto;
+    flex: 0 0 auto;
+}
+
+.response-display {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 400;
+    color: #ffffff;
+    font-family: 'Roboto Mono', 'Segoe UI', monospace;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 2px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.4),
+        0 2px 8px rgba(0, 0, 0, 0.2);
+    flex: 0 0 auto;
+}
+
+.response-keypad {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 280px;
+    margin: 0 auto;
+    pointer-events: auto;
+    z-index: 20;
+    padding: 12px 0;
+    min-height: 0;
+    overflow: visible;
+}
+
+.response-numbers {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    min-height: 0;
+    padding-bottom: 8px;
+}
+
+.response-key {
+    width: 56px;
+    height: 56px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 25;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.response-key:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.08);
+    box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.4),
+        0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.response-key:active {
+    transform: scale(0.96);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.response-action {
+    width: 100px;
+    height: 48px;
+    border: none;
+    border-radius: 24px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 30;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.4),
+        0 3px 6px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
+}
+
+.response-action.delete {
+    background: rgba(244, 67, 54, 0.15);
+    color: #f44336;
+    border-color: rgba(244, 67, 54, 0.3);
+}
+
+.response-action.send {
+    background: rgba(76, 175, 80, 0.15);
+    color: #4caf50;
+    border-color: rgba(76, 175, 80, 0.3);
+}
+
+.response-action:hover {
+    transform: scale(1.08);
+    box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.4),
+        0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.response-action.delete:hover {
+    background: rgba(244, 67, 54, 0.25);
+    border-color: rgba(244, 67, 54, 0.4);
+}
+
+.response-action.send:hover {
+    background: rgba(76, 175, 80, 0.25);
+    border-color: rgba(76, 175, 80, 0.4);
+}
+
+.response-action:active {
+    transform: scale(0.96);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+
+.smartphone-bottom {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.home-indicator {
+    width: 134px;
+    height: 5px;
+    background: #333;
+    border-radius: 3px;
+}
+
+
+/* Quick Test Codes Panel */
+.quick-test-codes {
+    margin-top: 20px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.quick-test-codes h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #005a9e;
+}
+
+.test-code-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.test-code-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 6px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 90, 158, 0.2);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
+}
+
+.test-code-btn:hover {
+    background: rgba(0, 90, 158, 0.05);
+    border-color: rgba(0, 90, 158, 0.3);
+    transform: translateY(-1px);
+}
+
+.test-code-btn .code {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+    color: #005a9e;
+    font-size: 0.9rem;
+}
+
+.test-code-btn .description {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 2px;
+}
+
+.help-button {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, #005a9e, #0078d4);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.help-button:hover {
+    background: linear-gradient(135deg, #004a85, #106ebe);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 90, 158, 0.3);
+}
+
+/* Help Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    max-width: 700px;
+    width: 100%;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e1e1e1;
+    background: linear-gradient(135deg, #005a9e, #0078d4);
+    color: white;
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.help-section {
+    margin-bottom: 32px;
+}
+
+.help-section:last-child {
+    margin-bottom: 0;
+}
+
+.help-section h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #005a9e;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.help-section p {
+    margin-bottom: 12px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.help-section ol, .help-section ul {
+    margin-left: 20px;
+    margin-bottom: 16px;
+}
+
+.help-section li {
+    margin-bottom: 8px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.test-codes-list {
+    display: grid;
+    gap: 16px;
+}
+
+.test-code-item {
+    padding: 16px;
+    background: rgba(0, 90, 158, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid #005a9e;
+}
+
+.test-code-item strong {
+    font-family: 'Roboto Mono', monospace;
+    color: #005a9e;
+    font-size: 1.1rem;
+}
+
+.test-code-item p {
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+.code-example {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.code-example h4 {
+    font-size: 1rem;
+    color: #005a9e;
+    margin-bottom: 8px;
+}
+
+.code-example pre {
+    background: #2d3748;
+    color: #e2e8f0;
+    padding: 12px;
+    border-radius: 6px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.85rem;
+    overflow-x: auto;
+    margin-bottom: 16px;
+}
+
+.code-example pre:last-child {
+    margin-bottom: 0;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #e1e1e1;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-btn-primary {
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #005a9e, #0078d4);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-btn-primary:hover {
+    background: linear-gradient(135deg, #004a85, #106ebe);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 90, 158, 0.3);
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        max-height: 90vh;
+        margin: 20px;
+    }
+    
+    .test-code-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-body {
+        padding: 16px;
+    }
+    
+    .modal-header, .modal-footer {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .phone {
+        transform: scale(0.9);
+    }
+    
+    .smartphone {
+        transform: scale(0.8);
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .modal-overlay {
+        padding: 10px;
+    }
+}

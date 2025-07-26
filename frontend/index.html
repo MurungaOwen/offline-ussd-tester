@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowSim - Offline USSD Emulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>FlowSim</h1>
+            <p>Offline USSD Testing Environment</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <h2>Configuration</h2>
+                <div class="phone-type-selector">
+                    <label>Phone Type:</label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="phone-type" value="feature" checked>
+                            <span>Feature Phone</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="phone-type" value="smartphone">
+                            <span>Smartphone</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="endpoint-config">
+                    <label for="endpoint-url">USSD Endpoint URL:</label>
+                    <input type="url" id="endpoint-url" placeholder="http://localhost:3000/ussd" value="http://localhost:3000/ussd">
+                    <button id="test-connection">Test Connection</button>
+                </div>
+                <div class="session-info">
+                    <p>Session ID: <span id="session-id">Not started</span></p>
+                    <p>Phone Number: <span id="phone-number">+254712345678</span></p>
+                    <p>Status: <span id="status" class="status-idle">Idle</span></p>
+                </div>
+                
+                <div class="quick-test-codes">
+                    <h3>Quick Test Codes</h3>
+                    <div class="test-code-buttons">
+                        <button class="test-code-btn" data-code="*123#" title="Demo Banking Services">
+                            <span class="code">*123#</span>
+                            <span class="description">Demo Banking</span>
+                        </button>
+                        <button class="test-code-btn" data-code="*101#" title="Mobile Money Services">
+                            <span class="code">*101#</span>
+                            <span class="description">Mobile Money</span>
+                        </button>
+                        <button class="test-code-btn" data-code="*199#" title="Help & Documentation">
+                            <span class="code">*199#</span>
+                            <span class="description">Help</span>
+                        </button>
+                    </div>
+                    <button id="show-help" class="help-button">📖 View Full Help</button>
+                </div>
+            </div>
+
+            <!-- Phone Emulator -->
+            <div class="phone-container">
+                <!-- Feature Phone -->
+                <div class="phone feature-phone" id="feature-phone">
+                    <div class="speaker"></div>
+                    <div class="phone-top">
+                        <div class="carrier">Safaricom</div>
+                        <div class="battery-time">12:34</div>
+                        <div class="signal">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="screen" id="screen">
+                        <div class="screen-content" id="screen-content">
+                            <p class="welcome-text">Try *123# for demo<br>or *199# for help</p>
+                        </div>
+                        <div class="input-area" id="input-area" style="display: none;">
+                            <input type="text" id="user-input" placeholder="Enter response..." pattern="[0-9*#]+" inputmode="numeric">
+                        </div>
+                    </div>
+
+                    <div class="keypad">
+                        <div class="key-row">
+                            <button class="key" data-key="1">1</button>
+                            <button class="key" data-key="2">2<span>ABC</span></button>
+                            <button class="key" data-key="3">3<span>DEF</span></button>
+                        </div>
+                        <div class="key-row">
+                            <button class="key" data-key="4">4<span>GHI</span></button>
+                            <button class="key" data-key="5">5<span>JKL</span></button>
+                            <button class="key" data-key="6">6<span>MNO</span></button>
+                        </div>
+                        <div class="key-row">
+                            <button class="key" data-key="7">7<span>PQRS</span></button>
+                            <button class="key" data-key="8">8<span>TUV</span></button>
+                            <button class="key" data-key="9">9<span>WXYZ</span></button>
+                        </div>
+                        <div class="key-row">
+                            <button class="key" data-key="*">*</button>
+                            <button class="key" data-key="0">0<span>+</span></button>
+                            <button class="key" data-key="#">#</button>
+                        </div>
+                        <div class="action-row">
+                            <button class="action-key clear" id="clear-btn">Clear</button>
+                            <button class="action-key call" id="send-btn">Send</button>
+                            <button class="action-key end" id="end-btn">End</button>
+                        </div>
+                    </div>
+                    <div class="phone-bottom"></div>
+                </div>
+
+                <!-- Smartphone -->
+                <div class="phone smartphone" id="smartphone" style="display: none;">
+                    <div class="smartphone-top">
+                        <div class="notch">
+                            <div class="camera"></div>
+                            <div class="speaker-grill"></div>
+                        </div>
+                        <div class="status-bar">
+                            <div class="status-left">
+                                <span class="time">12:34</span>
+                            </div>
+                            <div class="status-right">
+                                <span class="signal-icon">📶</span>
+                                <span class="wifi-icon">📶</span>
+                                <span class="battery-icon">🔋</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="smartphone-screen" id="smartphone-screen">
+                        <!-- USSD Dialog -->
+                        <div class="ussd-popup" id="ussd-popup" style="display: none;">
+                            <div class="popup-header">
+                                <span>USSD</span>
+                                <button class="popup-close" id="popup-close">×</button>
+                            </div>
+                            <div class="popup-content" id="popup-content">
+                                <p>Try *123# for demo or *199# for help</p>
+                            </div>
+                            <div class="popup-input" id="popup-input" style="display: none;">
+                                <input type="tel" id="smartphone-user-input" placeholder="Enter response..." pattern="[0-9*#]+" inputmode="numeric" readonly>
+                            </div>
+                            <div class="popup-actions">
+                                <button class="popup-btn cancel" id="smartphone-cancel">Cancel</button>
+                                <button class="popup-btn send" id="smartphone-send">Send</button>
+                            </div>
+                        </div>
+                        
+                        <!-- USSD Response Keypad -->
+                        <div class="ussd-response-keypad" id="ussd-response-keypad" style="display: none;">
+                            <div class="ussd-message" id="ussd-message">
+                                USSD Response will appear here
+                            </div>
+                            <div class="response-display" id="response-display">
+                                Enter your response
+                            </div>
+                            <div class="response-keypad">
+                                <div class="response-numbers">
+                                    <div class="keypad-row">
+                                        <button class="response-key" data-value="1">1</button>
+                                        <button class="response-key" data-value="2">2</button>
+                                        <button class="response-key" data-value="3">3</button>
+                                    </div>
+                                    <div class="keypad-row">
+                                        <button class="response-key" data-value="4">4</button>
+                                        <button class="response-key" data-value="5">5</button>
+                                        <button class="response-key" data-value="6">6</button>
+                                    </div>
+                                    <div class="keypad-row">
+                                        <button class="response-key" data-value="7">7</button>
+                                        <button class="response-key" data-value="8">8</button>
+                                        <button class="response-key" data-value="9">9</button>
+                                    </div>
+                                    <div class="keypad-row">
+                                        <button class="response-key" data-value="*">*</button>
+                                        <button class="response-key" data-value="0">0</button>
+                                        <button class="response-key" data-value="#">#</button>
+                                    </div>
+                                </div>
+                                <div class="keypad-row keypad-actions">
+                                    <button class="response-action delete" id="response-delete">⌫</button>
+                                    <button class="response-action send" id="response-send">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dialer Interface -->
+                        <div class="smartphone-dialer-interface" id="smartphone-dialer-interface">
+                            <div class="dialer-display-area">
+                                <div class="dialer-display" id="smartphone-dialer-display">
+                                    Try *123# or *199#
+                                </div>
+                            </div>
+                            
+                            <div class="smartphone-keypad">
+                                <div class="keypad-row">
+                                    <button class="keypad-key" data-value="1">1</button>
+                                    <button class="keypad-key" data-value="2">2<span>ABC</span></button>
+                                    <button class="keypad-key" data-value="3">3<span>DEF</span></button>
+                                </div>
+                                <div class="keypad-row">
+                                    <button class="keypad-key" data-value="4">4<span>GHI</span></button>
+                                    <button class="keypad-key" data-value="5">5<span>JKL</span></button>
+                                    <button class="keypad-key" data-value="6">6<span>MNO</span></button>
+                                </div>
+                                <div class="keypad-row">
+                                    <button class="keypad-key" data-value="7">7<span>PQRS</span></button>
+                                    <button class="keypad-key" data-value="8">8<span>TUV</span></button>
+                                    <button class="keypad-key" data-value="9">9<span>WXYZ</span></button>
+                                </div>
+                                <div class="keypad-row">
+                                    <button class="keypad-key" data-value="*">*</button>
+                                    <button class="keypad-key" data-value="0">0<span>+</span></button>
+                                    <button class="keypad-key" data-value="#">#</button>
+                                </div>
+                                <div class="keypad-row keypad-actions">
+                                    <button class="keypad-action delete" id="smartphone-delete">⌫</button>
+                                    <button class="keypad-action dial" id="smartphone-dial">📞</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="smartphone-bottom">
+                        <div class="home-indicator"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Log Panel -->
+            <div class="log-panel">
+                <div class="log-header">
+                    <h2>Request/Response Log</h2>
+                    <div class="log-actions">
+                        <button id="copy-log">Copy</button>
+                        <button id="clear-log">Clear</button>
+                    </div>
+                </div>
+                <div class="log-content" id="log-content">
+                    <p class="log-empty">No requests yet...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>FlowSim Help & Documentation</h2>
+                <button class="modal-close" id="close-help-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="help-section">
+                    <h3>🚀 Getting Started</h3>
+                    <p>FlowSim is an offline USSD emulator for testing USSD applications locally.</p>
+                    <ol>
+                        <li>Use the keypad to dial any USSD code</li>
+                        <li>Press # to execute the command</li>
+                        <li>Follow menu prompts with numeric responses</li>
+                        <li>View request/response logs in the right panel</li>
+                    </ol>
+                </div>
+                
+                <div class="help-section">
+                    <h3>📱 Built-in Test Codes</h3>
+                    <div class="test-codes-list">
+                        <div class="test-code-item">
+                            <strong>*123#</strong> - Demo Banking Services
+                            <p>Complete banking simulation with balance check, transfers, and airtime purchase</p>
+                        </div>
+                        <div class="test-code-item">
+                            <strong>*101#</strong> - Mobile Money Services
+                            <p>M-Money services including send money, withdraw cash, and balance check</p>
+                        </div>
+                        <div class="test-code-item">
+                            <strong>*199#</strong> - Help System
+                            <p>Access this help information directly from the phone interface</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="help-section">
+                    <h3>🔧 Custom Endpoints</h3>
+                    <p>To test your own USSD server:</p>
+                    <ol>
+                        <li>Set your endpoint URL in the Configuration panel</li>
+                        <li>Ensure your server accepts POST requests</li>
+                        <li>Enable CORS for cross-origin requests</li>
+                        <li>Dial ANY code (e.g., *384#, *767#) - it will be sent to your URL</li>
+                        <li>Built-in codes (*123#, *101#, *199#) always work offline</li>
+                    </ol>
+                    <div class="code-example">
+                        <h4>Expected Request Format:</h4>
+                        <pre>{
+  "text": "*123#",
+  "sessionId": "session-abc123",
+  "phoneNumber": "+254712345678"
+}</pre>
+                        <h4>Expected Response Format:</h4>
+                        <pre>{
+  "response": "CON Welcome\n1. Option 1\n2. Option 2",
+  "sessionId": "session-abc123"
+}</pre>
+                    </div>
+                </div>
+                
+                <div class="help-section">
+                    <h3>💡 Tips & Tricks</h3>
+                    <ul>
+                        <li>Use "CON" prefix for continued sessions, "END" for final responses</li>
+                        <li>Switch between Feature Phone and Smartphone views</li>
+                        <li>Copy logs for debugging and analysis</li>
+                        <li>Test connection before trying custom endpoints</li>
+                        <li>Use the Clear button to reset your input</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="close-help-footer" class="modal-btn-primary">Got it!</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
