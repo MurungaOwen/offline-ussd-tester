@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowSim - Example USSD Server</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            padding: 30px;
+        }
+        h1 {
+            color: #005a9e;
+            margin-bottom: 20px;
+        }
+        .server-status {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .server-running {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .server-stopped {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .start-btn {
+            background: #28a745;
+            color: white;
+        }
+        .start-btn:hover {
+            background: #218838;
+        }
+        .stop-btn {
+            background: #dc3545;
+            color: white;
+        }
+        .stop-btn:hover {
+            background: #c82333;
+        }
+        .logs {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .log-info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .log-request {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .log-response {
+            background: #d4edda;
+            color: #155724;
+        }
+        .endpoint-info {
+            background: #e2e3e5;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .endpoint-info code {
+            background: #f8f9fa;
+            padding: 4px 8px;
+            border-radius: 3px;
+            color: #e83e8c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>FlowSim Example USSD Server</h1>
+        
+        <div class="endpoint-info">
+            <h3>Server Endpoint</h3>
+            <p>When running, the server will be available at:</p>
+            <code>http://localhost:8080/ussd</code>
+            <p>Use this URL in FlowSim to test real USSD flows.</p>
+        </div>
+        
+        <div id="server-status" class="server-status server-stopped">
+            Server Stopped
+        </div>
+        
+        <div class="controls">
+            <button id="start-btn" class="start-btn">Start Server</button>
+            <button id="stop-btn" class="stop-btn">Stop Server</button>
+        </div>
+        
+        <h3>Server Logs</h3>
+        <div id="logs" class="logs">
+            <div class="log-entry log-info">Example USSD Server - Ready to start</div>
+        </div>
+    </div>
+
+    <script>
+        class ExampleUSSDServer {
+            constructor() {
+                this.isRunning = false;
+                this.server = null;
+                this.logs = [];
+                
+                this.statusDiv = document.getElementById('server-status');
+                this.startBtn = document.getElementById('start-btn');
+                this.stopBtn = document.getElementById('stop-btn');
+                this.logsDiv = document.getElementById('logs');
+                
+                this.startBtn.addEventListener('click', () => this.startServer());
+                this.stopBtn.addEventListener('click', () => this.stopServer());
+                
+                this.updateUI();
+            }
+            
+            startServer() {
+                if (this.isRunning) return;
+                
+                try {
+                    // Start a simple HTTP server simulation
+                    this.isRunning = true;
+                    this.log('info', 'Starting USSD server on http://localhost:8080/ussd');
+                    
+                    // Simulate server startup
+                    setTimeout(() => {
+                        this.log('info', 'Server started successfully');
+                        this.log('info', 'Waiting for USSD requests...');
+                        this.updateUI();
+                        
+                        // Start listening for requests (simulation)
+                        this.setupRequestHandler();
+                    }, 1000);
+                    
+                } catch (error) {
+                    this.log('error', `Failed to start server: ${error.message}`);
+                    this.isRunning = false;
+                }
+                
+                this.updateUI();
+            }
+            
+            stopServer() {
+                if (!this.isRunning) return;
+                
+                this.isRunning = false;
+                this.log('info', 'Stopping USSD server...');
+                
+                setTimeout(() => {
+                    this.log('info', 'Server stopped');
+                    this.updateUI();
+                }, 500);
+                
+                this.updateUI();
+            }
+            
+            setupRequestHandler() {
+                // This is a simulation - in reality, you'd use Node.js or Python with a real HTTP server
+                this.log('info', 'Request handler ready - waiting for FlowSim connections');
+                
+                // Simulate periodic health checks
+                if (this.isRunning) {
+                    setTimeout(() => {
+                        if (this.isRunning) {
+                            this.setupRequestHandler();
+                        }
+                    }, 30000);
+                }
+            }
+            
+            // Simulate handling a USSD request
+            handleUSSDRequest(request) {
+                this.log('request', `Received: ${JSON.stringify(request)}`);
+                
+                const { text, sessionId, phoneNumber } = request;
+                let response;
+                
+                // Simple USSD menu logic
+                if (text === '*123#') {
+                    response = {
+                        response: 'CON Welcome to Demo Bank\\n1. Check Balance\\n2. Transfer Money\\n3. Buy Airtime',
+                        sessionId: sessionId
+                    };
+                } else if (text === '*123*1#') {
+                    response = {
+                        response: 'END Your balance is $1,234.56',
+                        sessionId: sessionId
+                    };
+                } else if (text === '*123*2#') {
+                    response = {
+                        response: 'CON Enter recipient phone number:',
+                        sessionId: sessionId
+                    };
+                } else if (text === '*123*3#') {
+                    response = {
+                        response: 'CON Select amount:\\n1. $5\\n2. $10\\n3. $20\\n4. Other',
+                        sessionId: sessionId
+                    };
+                } else if (text.startsWith('*123*2*')) {
+                    response = {
+                        response: 'CON Enter amount to transfer:',
+                        sessionId: sessionId
+                    };
+                } else {
+                    response = {
+                        response: 'END Thank you for using Demo Bank',
+                        sessionId: sessionId
+                    };
+                }
+                
+                this.log('response', `Sent: ${JSON.stringify(response)}`);
+                return response;
+            }
+            
+            log(type, message) {
+                const timestamp = new Date().toLocaleTimeString();
+                const logEntry = `[${timestamp}] ${message}`;
+                
+                const logDiv = document.createElement('div');
+                logDiv.className = `log-entry log-${type}`;
+                logDiv.textContent = logEntry;
+                
+                this.logsDiv.appendChild(logDiv);
+                this.logsDiv.scrollTop = this.logsDiv.scrollHeight;
+                
+                // Keep only last 50 logs
+                const logs = this.logsDiv.querySelectorAll('.log-entry');
+                if (logs.length > 50) {
+                    logs[0].remove();
+                }
+            }
+            
+            updateUI() {
+                if (this.isRunning) {
+                    this.statusDiv.textContent = 'Server Running on http://localhost:8080/ussd';
+                    this.statusDiv.className = 'server-status server-running';
+                    this.startBtn.disabled = true;
+                    this.stopBtn.disabled = false;
+                } else {
+                    this.statusDiv.textContent = 'Server Stopped';
+                    this.statusDiv.className = 'server-status server-stopped';
+                    this.startBtn.disabled = false;
+                    this.stopBtn.disabled = true;
+                }
+            }
+        }
+        
+        // Initialize the server
+        window.ussdServer = new ExampleUSSDServer();
+        
+        // Note to developers
+        console.log('This is a frontend simulation of a USSD server.');
+        console.log('For real implementation, use Node.js, Python Flask/FastAPI, or Go.');
+        console.log('Example Node.js implementation:');
+        console.log(`
+const express = require('express');
+const cors = require('cors');
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.post('/ussd', (req, res) => {
+    const { text, sessionId, phoneNumber } = req.body;
+    
+    let response;
+    if (text === '*123#') {
+        response = {
+            response: 'CON Welcome to Demo Bank\\n1. Check Balance\\n2. Transfer Money',
+            sessionId: sessionId
+        };
+    } else if (text === '*123*1#') {
+        response = {
+            response: 'END Your balance is $1,234.56',
+            sessionId: sessionId
+        };
+    } else {
+        response = {
+            response: 'END Thank you!',
+            sessionId: sessionId
+        };
+    }
+    
+    res.json(response);
+});
+
+app.listen(8080, () => {
+    console.log('USSD server running on http://localhost:8080/ussd');
+});
+        `);
+    </script>
+</body>
+</html>
