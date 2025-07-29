@@ -7,6 +7,8 @@ class FlowSimApp {
         this.phoneNumber = '+254712345678';
         this.logs = [];
         this.phoneType = 'feature';
+        this.serviceCode = ''; // Store the initial USSD code
+        this.userInputHistory = []; // Track user inputs for text parameter
         
         this.initializeElements();
         this.attachEventListeners();
@@ -355,6 +357,10 @@ class FlowSimApp {
 
         console.log('Starting USSD session with:', this.currentInput);
         
+        // Extract service code for Africa's Talking compatibility
+        this.serviceCode = this.currentInput;
+        this.userInputHistory = []; // Reset for new session
+        
         this.sessionId = this.generateSessionId();
         this.isSessionActive = true;
         this.updateStatus('active');
@@ -370,7 +376,8 @@ class FlowSimApp {
         this.updateScreen('Connecting...');
         
         try {
-            const response = await this.sendUSSDRequest(this.currentInput);
+            // For initial request, text should be empty (Africa's Talking standard)
+            const response = await this.sendUSSDRequest('');
             console.log('Initial session - About to call handleUSSDResponse with:', response);
             this.handleUSSDResponse(response);
             console.log('Initial session - handleUSSDResponse completed');
@@ -395,9 +402,11 @@ class FlowSimApp {
         }
         
         try {
-            const fullText = this.buildFullText(input);
-            console.log('Sending USSD request with full text:', fullText);
-            const response = await this.sendUSSDRequest(fullText);
+            // Add user input to history and build text parameter (Africa's Talking format)
+            this.userInputHistory.push(input);
+            const textParam = this.userInputHistory.join('*');
+            console.log('Sending USSD request with text parameter:', textParam);
+            const response = await this.sendUSSDRequest(textParam);
             console.log('About to call handleUSSDResponse with:', response);
             this.handleUSSDResponse(response);
             console.log('handleUSSDResponse completed');
@@ -420,18 +429,19 @@ class FlowSimApp {
             sessionId: this.sessionId,
             phoneNumber: this.phoneNumber,
             text: text,
-            endpoint: this.endpointUrl.value.trim()
+            endpoint: this.endpointUrl.value.trim(),
+            serviceCode: this.serviceCode
         };
         
         this.logRequest(request);
         
-        // Check if this is a built-in test code
+        // Check if this is a built-in test code using serviceCode
         const builtInCodes = ['*123#', '*101#', '*199#'];
-        const isBuiltInCode = builtInCodes.some(code => text.startsWith(code.replace('#', '')));
+        const isBuiltInCode = builtInCodes.includes(this.serviceCode);
         
         if (isBuiltInCode) {
-            console.log('Using built-in simulator for:', text);
-            return this.simulateResponse(text);
+            console.log('Using built-in simulator for:', this.serviceCode);
+            return this.simulateResponse(this.serviceCode);
         }
         
         const url = this.endpointUrl.value.trim();
@@ -445,9 +455,9 @@ class FlowSimApp {
             };
         }
         
-        // If URL is localhost:8080, use Go backend
-        if (url.includes('localhost:8080') && !url.includes('/ussd')) {
-            console.log('Using Go backend API');
+        // Always use Go backend for external endpoints (unless it's a direct API call)
+        if (!url.includes('/api/ussd')) {
+            console.log('Using Go backend API for external endpoint:', url);
             return this.sendToGoBackend(request);
         }
         
@@ -565,7 +575,14 @@ class FlowSimApp {
         }
     }
 
-    getBuiltInResponse(text) {
+    getBuiltInResponse(serviceCode) {
+        // Build the full USSD string for compatibility with existing logic
+        const text = this.userInputHistory.length > 0 ? 
+            serviceCode.replace('#', '*' + this.userInputHistory.join('*') + '#') : 
+            serviceCode;
+        
+        console.log('Built-in simulator - ServiceCode:', serviceCode, 'Text:', text, 'History:', this.userInputHistory);
+        
         // Demo Banking (*123#)
         if (text === '*123#') {
             return {
@@ -663,7 +680,7 @@ class FlowSimApp {
         // Simulate delay
         return new Promise((resolve) => {
             setTimeout(() => {
-                let response = this.getBuiltInResponse(text);
+                let response = this.getBuiltInResponse(this.serviceCode);
                 
                 this.logResponse(response);
                 resolve(response);
@@ -740,6 +757,8 @@ class FlowSimApp {
         this.isSessionActive = false;
         this.sessionId = null;
         this.currentInput = '';
+        this.serviceCode = '';
+        this.userInputHistory = [];
         this.updateStatus('idle');
         this.sessionIdSpan.textContent = 'Not started';
         
@@ -975,7 +994,8 @@ class FlowSimApp {
             const testPayload = {
                 sessionId: 'test-session-' + Date.now(),
                 phoneNumber: this.phoneNumber,
-                text: '*TEST#'
+                text: '',
+                serviceCode: '*TEST#'
             };
             
             console.log('Testing connection to:', url);
@@ -995,8 +1015,22 @@ class FlowSimApp {
             console.log('Response headers:', Object.fromEntries(response.headers.entries()));
             
             if (response.ok) {
-                const data = await response.json();
-                console.log('Response data:', data);
+                let data;
+                const responseText = await response.text();
+                console.log('Raw response:', responseText);
+                
+                // Try to parse as JSON first
+                try {
+                    data = JSON.parse(responseText);
+                    console.log('Parsed JSON response:', data);
+                } catch (jsonError) {
+                    // If not JSON, treat as plain text (common with real USSD servers)
+                    console.log('Response is plain text, not JSON');
+                    data = {
+                        response: responseText,
+                        sessionId: 'test-session'
+                    };
+                }
                 
                 // Validate response format
                 if (this.isValidUSSDResponse(data)) {
@@ -1053,7 +1087,8 @@ class FlowSimApp {
             const testPayload = {
                 sessionId: 'test-session-' + Date.now(),
                 phoneNumber: this.phoneNumber,
-                text: '*TEST#',
+                text: '',
+                serviceCode: '*TEST#',
                 endpoint: ''
             };
             

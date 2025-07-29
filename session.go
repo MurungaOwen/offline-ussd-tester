@@ -47,11 +47,8 @@ func (sm *SessionManager) GetOrCreateSession(sessionID, phoneNumber string) *Ses
 	// Check if session exists and update activity
 	if session, exists := sm.sessions[sessionID]; exists {
 		session.LastActivity = time.Now()
-		// Reset the timeout
-		session.Cancel()
-		ctx, cancel := context.WithTimeout(context.Background(), sm.timeout)
-		session.Context = ctx
-		session.Cancel = cancel
+		// Don't reset the context if it's still active
+		// Just update the last activity time
 		return session
 	}
 	

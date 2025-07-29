@@ -14,6 +14,7 @@ type USSDRequest struct {
 	SessionID   string `json:"sessionId"`
 	PhoneNumber string `json:"phoneNumber"`
 	Text        string `json:"text"`
+	ServiceCode string `json:"serviceCode"`
 }
 
 type USSDResponse struct {
