@@ -52,6 +52,7 @@ func forwardUSSDRequestWithContext(ctx context.Context, req USSDRequest) (*USSDR
 	
 	var response USSDResponse
 	if err := json.Unmarshal(body, &response); err != nil {
+		// Try alternative JSON format
 		var altResponse struct {
 			Response string `json:"response"`
 		}
@@ -59,7 +60,14 @@ func forwardUSSDRequestWithContext(ctx context.Context, req USSDRequest) (*USSDR
 			response.Response = altResponse.Response
 			response.SessionID = req.SessionID
 		} else {
-			return nil, fmt.Errorf("failed to parse response: %w", err)
+			// Handle plain text response (common with real USSD servers)
+			textResponse := strings.TrimSpace(string(body))
+			if textResponse != "" {
+				response.Response = textResponse
+				response.SessionID = req.SessionID
+			} else {
+				return nil, fmt.Errorf("failed to parse response: %w", err)
+			}
 		}
 	}
 	
